@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ngokcimen/bil481_hw1.svg?branch=master)](https://travis-ci.org/ngokcimen/bil481_hw1)
+
 # BIL 481 - HW 1
 
 ### Goals
