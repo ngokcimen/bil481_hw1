@@ -44,3 +44,5 @@ Make sure that your github repository shows **a meaningful commit history distri
 1.	Add a **screenshot** of the overview page of your heroku app (see an example below) GitHub page
 
 Make sure the heroku app is running until the grading is done (unless you manually delete the app from heroku, it will stay running). If the demo site does not work, we will assume you have not completed the heroku setup.
+
+Demo site: https://powerful-wave-29708.herokuapp.com/
