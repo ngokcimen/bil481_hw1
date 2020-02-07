@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/ngokcimen/bil481_hw1.svg?branch=master)](https://travis-ci.org/ngokcimen/bil481_hw1)
 
+###### Demo site: https://powerful-wave-29708.herokuapp.com/
+
 # BIL 481 - HW 1
 
 ### Goals
@@ -45,4 +47,3 @@ Make sure that your github repository shows **a meaningful commit history distri
 
 Make sure the heroku app is running until the grading is done (unless you manually delete the app from heroku, it will stay running). If the demo site does not work, we will assume you have not completed the heroku setup.
 
-Demo site: https://powerful-wave-29708.herokuapp.com/
