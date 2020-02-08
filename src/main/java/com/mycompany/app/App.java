@@ -43,7 +43,7 @@ public class App
     }
     public static boolean containsNonNumeric(ArrayList<String> array){
       for (String string : array) {
-        if (string.matches("^[0-9]+$")) {
+        if (!string.matches("^[0-9]+$")) {
           return true;
         }
       }
