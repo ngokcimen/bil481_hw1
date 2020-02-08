@@ -19,24 +19,32 @@ import spark.template.mustache.MustacheTemplateEngine;
 public class App
 {
     public static ArrayList<String> generate(ArrayList<String> wordL, ArrayList<String> numL, int wQuantity, int nQuantity) {
-      if (wQuantity <= 0 || nQuantity <= 0 || wQuantity > wordL.size() || nQuantity > numL.size() || wordL == null || numL == null) {
+      if (wQuantity < 0 || nQuantity < 0 || wQuantity > wordL.size() || nQuantity > numL.size()) {
         return null;
       }
+      
       ArrayList<String> password = new ArrayList<>();
       ArrayList<String> tmpList = new ArrayList<>();
 
-      ArrayList<Integer> wordIndexList = App.generateRandIndexArr(wordL, wQuantity);
-      for (Integer integer : wordIndexList) {
-        tmpList.add(wordL.get(integer));
+      if (!(wQuantity == 0 || wordL == null || wordL.size()==0)) {
+        ArrayList<Integer> wordIndexList = App.generateRandIndexArr(wordL, wQuantity);
+        for (Integer integer : wordIndexList) {
+          tmpList.add(wordL.get(integer));
+        }
       }
-      ArrayList<Integer> numIndexList = App.generateRandIndexArr(numL, nQuantity);
-      for (Integer integer : numIndexList) {
-        tmpList.add(numL.get(integer));
+      
+      if (!(nQuantity == 0 || numL == null || numL.size()==0)) {
+        ArrayList<Integer> numIndexList = App.generateRandIndexArr(numL, nQuantity);
+        for (Integer integer : numIndexList) {
+          tmpList.add(numL.get(integer));
+        }
       }
 
-      ArrayList<Integer> shuffledIndexList = App.generateRandIndexArr(tmpList, tmpList.size());
-      for (Integer integer : shuffledIndexList) {
-        password.add(tmpList.get(integer));
+      if (tmpList.size() != 0 || tmpList != null) {
+        ArrayList<Integer> shuffledIndexList = App.generateRandIndexArr(tmpList, tmpList.size());
+        for (Integer integer : shuffledIndexList) {
+          password.add(tmpList.get(integer));
+        }
       }
 
       return password;
@@ -49,6 +57,7 @@ public class App
       }
       return false;
     }
+
     public static ArrayList<Integer> generateRandIndexArr(ArrayList<String> list, int quantity) {
       Random rand = new Random();
       ArrayList<Integer> indexes = new ArrayList<>();
@@ -82,30 +91,40 @@ public class App
           //System.out.println(req.queryParams("input2"));
 
           String words = req.queryParams("wordlist");
-          java.util.Scanner scWord = new java.util.Scanner(words);
-          scWord.useDelimiter("[;\r\n]+");
           java.util.ArrayList<String> wordList = new java.util.ArrayList<>();
-          while (scWord.hasNext())
-          {
-            String value = (scWord.next().replaceAll("\\s",""));
-            wordList.add(value);
+          int wQuantity = 0;
+          if (words.length()!=0) {
+            java.util.Scanner scWord = new java.util.Scanner(words);
+            scWord.useDelimiter("[;\r\n]+");
+            while (scWord.hasNext())
+            {
+              String value = (scWord.next().replaceAll("\\s",""));
+              wordList.add(value);
+            }
+            if (req.queryParams("wordQuantity").length()!=0) {
+              wQuantity = Integer.parseInt(req.queryParams("wordQuantity"));
+            }
           }
-          System.out.println(wordList);
+          System.out.println(wordList+ " - quantity: " + wQuantity);
 
 
           String nums = req.queryParams("numlist");
-          java.util.Scanner scNum = new java.util.Scanner(nums);
-          scNum.useDelimiter("[;\r\n]+");
           java.util.ArrayList<String> numList = new java.util.ArrayList<>();
-          while (scNum.hasNext())
-          {
-            String value = (scNum.next().replaceAll("\\s",""));
-            numList.add(value);
-          }
-          System.out.println(numList);
+          int nQuantity = 0;
+          if (nums.length()!=0) {
+            java.util.Scanner scNum = new java.util.Scanner(nums);
+            scNum.useDelimiter("[;\r\n]+");
+            while (scNum.hasNext())
+            {
+              String value = (scNum.next().replaceAll("\\s",""));
+              numList.add(value);
+            }
+            if (req.queryParams("numberQuantity").length()!=0) {
+              nQuantity = Integer.parseInt(req.queryParams("numberQuantity"));
+            }
+          }         
+          System.out.println(numList + " - quantity: " + nQuantity);
           
-          int wQuantity = Integer.parseInt(req.queryParams("wordQuantity"));
-          int nQuantity = Integer.parseInt(req.queryParams("numberQuantity"));
           
           ArrayList<String> password = App.generate(wordList, numList, wQuantity, nQuantity);
           
@@ -137,6 +156,9 @@ public class App
     }
 
     static String toStringArr(ArrayList<String> list){
+      if (list==null || list.size()==0){
+        return "wrong input format";
+      }
       String res = "";
       for (String string : list) {
         res += string;
