@@ -19,6 +19,9 @@ import spark.template.mustache.MustacheTemplateEngine;
 public class App
 {
     public static ArrayList<String> generate(ArrayList<String> wordL, ArrayList<String> numL, int wQuantity, int nQuantity) {
+      if (wQuantity <= 0 || nQuantity <= 0 || wQuantity > wordL.size() || nQuantity > numL.size() || wordL == null || numL == null) {
+        return null;
+      }
       ArrayList<String> password = new ArrayList<>();
       ArrayList<String> tmpList = new ArrayList<>();
 
@@ -38,7 +41,14 @@ public class App
 
       return password;
     }
-
+    public static boolean containsNonNumeric(ArrayList<String> array){
+      for (String string : array) {
+        if (string.matches("^[0-9]+$")) {
+          return true;
+        }
+      }
+      return false;
+    }
     public static ArrayList<Integer> generateRandIndexArr(ArrayList<String> list, int quantity) {
       Random rand = new Random();
       ArrayList<Integer> indexes = new ArrayList<>();
@@ -93,13 +103,16 @@ public class App
             numList.add(value);
           }
           System.out.println(numList);
-
+          
           int wQuantity = Integer.parseInt(req.queryParams("wordQuantity"));
           int nQuantity = Integer.parseInt(req.queryParams("numberQuantity"));
-
+          
           ArrayList<String> password = App.generate(wordList, numList, wQuantity, nQuantity);
+          
           String result = App.toStringArr(password);
-
+          if (App.containsNonNumeric(numList)) {
+            result = "Wrong number list input";
+          }
          Map map = new HashMap();
           map.put("result", result);
           return new ModelAndView(map, "compute.mustache");
