@@ -1,14 +1,13 @@
 <title>My application</title>
-  <h1>Hello, World!</h1>
-    Result is {{result}}
+  <h1>Password Generator</h1>
+    Password: {{result}}
 
 
   <form action="compute" method="post">
         <textarea name="wordlist" rows="10" cols="20" placeholder="Enter words seperated by new line"></textarea>
-        <input type="number" name="wordQuantity">
+        <input type="number" name="wordQuantity" placeholder="Quantity of words to select">
         <textarea name="numlist" rows="10" cols="20" placeholder="Enter numbers seperated by new line"></textarea>
-        <input type="number" name="numberQuantity">
-
+        <input type="number" name="numberQuantity" placeholder="Quantity of numbers to select">
         <br>
         <input type="submit">
   </form>
