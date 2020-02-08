@@ -47,3 +47,7 @@ Make sure that your github repository shows **a meaningful commit history distri
 
 Make sure the heroku app is running until the grading is done (unless you manually delete the app from heroku, it will stay running). If the demo site does not work, we will assume you have not completed the heroku setup.
 
+![Github](screenshots/github.png)
+![Travis](screenshots/travis.png)
+![Heroku](screenshots/heroku.png)
+![App](screenshots/app.png)
