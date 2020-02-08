@@ -7,6 +7,7 @@ import static spark.Spark.post;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import spark.ModelAndView;
 import spark.template.mustache.MustacheTemplateEngine;
@@ -17,8 +18,42 @@ import spark.template.mustache.MustacheTemplateEngine;
  */
 public class App
 {
+    public static ArrayList<String> generate(ArrayList<String> wordL, ArrayList<String> numL, int wQuantity, int nQuantity) {
+      ArrayList<String> password = new ArrayList<>();
+      ArrayList<String> tmpList = new ArrayList<>();
+
+      ArrayList<Integer> wordIndexList = App.generateRandIndexArr(wordL, wQuantity);
+      for (Integer integer : wordIndexList) {
+        tmpList.add(wordL.get(integer));
+      }
+      ArrayList<Integer> numIndexList = App.generateRandIndexArr(numL, nQuantity);
+      for (Integer integer : numIndexList) {
+        tmpList.add(numL.get(integer));
+      }
+
+      ArrayList<Integer> shuffledIndexList = App.generateRandIndexArr(tmpList, tmpList.size());
+      for (Integer integer : shuffledIndexList) {
+        password.add(tmpList.get(integer));
+      }
+
+      return password;
+    }
+
+    public static ArrayList<Integer> generateRandIndexArr(ArrayList<String> list, int quantity) {
+      Random rand = new Random();
+      ArrayList<Integer> indexes = new ArrayList<>();
+      for (int i = 0; i < quantity; i++) {
+        int rand_int = rand.nextInt(list.size());
+        while(App.search(indexes, rand_int)){
+          rand_int = rand.nextInt(list.size());
+        }
+        indexes.add(rand_int);
+      }
+      return indexes;
+    }
+
     public static boolean search(ArrayList<Integer> array, int e) {
-      System.out.println("inside search");
+      //System.out.println("inside search");
       if (array == null) return false;
 
       for (int elt : array) {
@@ -36,22 +71,34 @@ public class App
           //System.out.println(req.queryParams("input1"));
           //System.out.println(req.queryParams("input2"));
 
-          String input1 = req.queryParams("input1");
-          java.util.Scanner sc1 = new java.util.Scanner(input1);
-          sc1.useDelimiter("[;\r\n]+");
-          java.util.ArrayList<Integer> inputList = new java.util.ArrayList<>();
-          while (sc1.hasNext())
+          String words = req.queryParams("wordlist");
+          java.util.Scanner scWord = new java.util.Scanner(words);
+          scWord.useDelimiter("[;\r\n]+");
+          java.util.ArrayList<String> wordList = new java.util.ArrayList<>();
+          while (scWord.hasNext())
           {
-            int value = Integer.parseInt(sc1.next().replaceAll("\\s",""));
-            inputList.add(value);
+            String value = (scWord.next().replaceAll("\\s",""));
+            wordList.add(value);
           }
-          System.out.println(inputList);
+          System.out.println(wordList);
 
 
-          String input2 = req.queryParams("input2").replaceAll("\\s","");
-          int input2AsInt = Integer.parseInt(input2);
+          String nums = req.queryParams("numlist");
+          java.util.Scanner scNum = new java.util.Scanner(nums);
+          scNum.useDelimiter("[;\r\n]+");
+          java.util.ArrayList<String> numList = new java.util.ArrayList<>();
+          while (scNum.hasNext())
+          {
+            String value = (scNum.next().replaceAll("\\s",""));
+            numList.add(value);
+          }
+          System.out.println(numList);
 
-          boolean result = App.search(inputList, input2AsInt);
+          int wQuantity = Integer.parseInt(req.queryParams("wordQuantity"));
+          int nQuantity = Integer.parseInt(req.queryParams("numberQuantity"));
+
+          ArrayList<String> password = App.generate(wordList, numList, wQuantity, nQuantity);
+          String result = App.toStringArr(password);
 
          Map map = new HashMap();
           map.put("result", result);
@@ -74,6 +121,14 @@ public class App
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
         return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
+
+    static String toStringArr(ArrayList<String> list){
+      String res = "";
+      for (String string : list) {
+        res += string;
+      }
+      return res;
     }
 }
 
