@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ngokcimen/bil481_hw1.svg?branch=master)](https://travis-ci.org/ngokcimen/bil481_hw1)
-
+### Password Generator
 ###### Demo site: https://powerful-wave-29708.herokuapp.com/
 
 # BIL 481 - HW 1
